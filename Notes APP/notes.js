@@ -10,6 +10,7 @@ var addnote_btn = document.querySelector("#addnote");
 function AddNote(){
 if(container3.style.display == "none"){
     container3.style.display = "block";
+    
 }
 else{
     container3.style.display = "none";
@@ -58,6 +59,7 @@ function margin(){
   return random_color[i++];
   };
 
+
  
 function showNotes(){
     container3.style.display = "none";
@@ -70,29 +72,60 @@ function showNotes(){
      notesObj = JSON.parse(notes);
     }
     let html="";
-    notesObj.forEach(function(element , index) {
-html += ` <div id="card" style="margin:margin();background-color:color();rotation:rotate();" >
-<h2 id="heading">${element.title}</h2>
-<p id="notes">${element.text}</p>
-<i class="far fa-trash-alt" type="button" id="${index}" onclick="deletenote(this.id)" style="color:red;margin-left:85px;margin-top:70px"></i>
+    notesObj.forEach(function(element) {
+html += ` <div id="card" style="margin=${margin()} ; transform:${rotate()}; background-color:${color()} ; box-shadow : 0px 10px 24px 0px rgba(0,0,0,0.75)" 
+
+}} >
+<h2 id="heading">${element.title.slice(0,15)}</h2>
+<p id="notes" style="padding-right:5px:padding-left:5px">${element.text.slice(0,40)}</p>
 </div>`;
-      
-    });
-   let notesElem = document.querySelector(".container2");
-   if(notesObj.lengtth != 0){
+
+
+
+
+});
+
+let notesElem = document.querySelector(".container2");
+if(notesObj.lengtth != 0){
     notesElem.innerHTML = html;
-   }else{
-       notesElem.innerText = `Start Adding Your Notes By Clicking at "Create Note" button and your can delete your notes either by "delte icon" or double clicking Your Note`;
-   };
+}else{
+    notesElem.innerText = `Start Adding Your Notes By Clicking at "Create Note" button and your can delete your notes either by "delte icon" or double clicking Your Note`;
+};
+
+var nodecards = document.querySelectorAll("#card");
+  nodecards.forEach((element , index)=>{
+     
+    element.addEventListener("mouseenter" ,() =>{
+    element.style.transform = "scale(1.2)"
+    })
+    element.addEventListener("mouseleave" ,() =>{
+    element.style.transform = "scale(1)"
+    })
+    element.addEventListener("dblclick" ,() =>{
+    deletenote(index)
+    })
+})
+
 
   
 
 };
+// var nodecards = document.querySelectorAll("#card");
+//   nodecards.forEach((element)=>{
+     
+//     element.addEventListener("mouseenter" ,() =>{
+//     element.style.transform = "scale(1.2)"
+//     })
+//     element.addEventListener("mouseleave" ,() =>{
+//     element.style.transform = "scale(1)"
+//     })
+// })
 
 
 
 XIcon.addEventListener("click",function(){
     AddNote();
+    
 });
 CheckIcon.addEventListener("click",function(){
     CreateNote();
@@ -101,9 +134,16 @@ CheckIcon.addEventListener("click",function(){
 });
 addnote_btn.addEventListener("click",function(){
     AddNote();
+
+  
+  
+// nodecards.style.margin = margin()
+// nodecards.style.backgroundColor = color()
+// nodecards.style.transform = rotate()
     
 
 });
+
 
 function deletenote(index){
 
@@ -121,11 +161,15 @@ let notes = localStorage.getItem("notes");
 }
 
 
+
+
 let searchTxt = document.querySelector('#searchtext');
 searchTxt.addEventListener("input", ()=>{
 
     let inputvalue = searchTxt.value.toLowerCase();
-    var nodecards = document.querySelectorAll("#card");
+  
+    
+
         
         Array.from(nodecards).forEach(function(element){
           let cardTxt = element.getElementsByTagName("p")[0].innerText;
